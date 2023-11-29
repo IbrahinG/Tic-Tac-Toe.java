@@ -1,12 +1,13 @@
 import java.util.Scanner;
 
 public class TicTacToe {
-    private char[][] board; // Since the char are basically row and col it more better to make the row and array to assign value.
-    private char currentPlayer; //Player 1 is me. Player 2 is my little bother. Hope he doesn't reconnect
+    private char[][] board; // Since the char are basically row and col it more better to make the row and
+                            // array to assign value.
+    private char currentPlayer; // Player 1 is me. Player 2 is my little bother. Hope he doesn't reconnect
 
     public TicTacToe() {
         board = new char[3][3]; // Make (3 x 3) grid
-        currentPlayer = 'X'; //Checks on the player
+        currentPlayer = 'X'; // Checks on the player
         initializeBoard();
     }
 
@@ -17,8 +18,9 @@ public class TicTacToe {
             }
         }
     }
-    //Problem when testing: We need a outline of the grid. 11/27
-    //Problem solved by making a row and col array
+
+    // Problem when testing: We need a outline of the grid. 11/27
+    // Problem solved by making a row and col array
     // God damn it both hectors
     private void printBoard() {
         System.out.println("-------------");
@@ -31,8 +33,9 @@ public class TicTacToe {
             System.out.println("-------------");
         }
     }
-    //Issue: Check if the Board is Full
-    //Problem Solved
+
+    // Issue: Check if the Board is Full
+    // Problem Solved
     private boolean isBoardFull() {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
@@ -77,15 +80,16 @@ public class TicTacToe {
     private void switchPlayer() { // Switch Player function
         currentPlayer = (currentPlayer == 'X') ? 'O' : 'X';
     }
-    //Comnplete all function of the game to make the game functional
+
+    // Comnplete all function of the game to make the game functional
     public void playGame() {
         Scanner scanner = new Scanner(System.in);
         int row, col;
 
         while (true) {
             printBoard();
-
-            System.out.println("Player " + currentPlayer + "'s turn. Enter row (0-2) and column (0-2) separated by space:");
+            System.out.println(
+                    "Player " + currentPlayer + "'s turn. Enter row (0-2) and column (0-2) separated by space:");
             row = scanner.nextInt();
             col = scanner.nextInt();
 
