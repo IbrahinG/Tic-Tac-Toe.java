@@ -5,12 +5,14 @@ import java.awt.*;
 import java.awt.event.*;
 public class UI_Menu extends JFrame implements ActionListener {
 	static JFrame menuFrame;
-	JPanel panel;
-	JButton lowerButton;
-	JButton upperButton;
-	JLabel TicTacToeLabel = new JLabel("Tic Tac Toe");
+	private JPanel panel;
+	private JButton lowerButton;
+	private JButton upperButton;
+	private JLabel TicTacToeLabel = new JLabel("Tic Tac Toe");
+	public String state = "menu";
 	UI_Menu(JFrame frame)
 	{
+		frame.getContentPane().removeAll();
 		menuFrame = frame;
 		menuFrame.setSize(500,500);
 		menuFrame.setVisible(true);
@@ -50,9 +52,14 @@ public class UI_Menu extends JFrame implements ActionListener {
 		{
 			enterOpponentMenu();
 		}
+		if(ev.getActionCommand().equals("Human"))
+		{
+			state = "Human";
+		}
 		if(ev.getActionCommand().equals("AI"))
 		{
 			System.out.println("AI");
+			state = "AI";
 		}
 
 	}
@@ -83,6 +90,10 @@ public class UI_Menu extends JFrame implements ActionListener {
 		quit_button.setFont(new Font("Calibri",Font.PLAIN,12));
 		panel.add(Box.createRigidArea(new Dimension(0,25)));
 		panel.add(quit_button);
+	}
+	private void enterGameMode()
+	{
+		return;
 	}
 }	
 
