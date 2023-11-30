@@ -1,12 +1,20 @@
 import java.util.Scanner;
+import java.util.Random;
 
-public class TicTacToe {
-    private char[][] board; // Since the char are basically row and col it more better to make the row and array to assign value.
-    private char currentPlayer; //Player 1 is me. Player 2 is my little bother. Hope he doesn't reconnect
+class TicTacToe {
+    private char[][] board; // Since the char are basically row and col it more better to make the row and
+                            // array to assign value.
+    private char currentPlayer; // Player 1 is me. Player 2 is my little brother. Hope he doesn't reconnect
+    private Random random; // Random number generator for choosing starting player
+    private int player1Wins;
+    private int player2Wins;
 
     public TicTacToe() {
         board = new char[3][3]; // Make (3 x 3) grid
-        currentPlayer = 'X'; //Checks on the player
+        random = new Random();
+        currentPlayer = (random.nextBoolean()) ? 'X' : 'O'; // Randomly choose starting player
+        player1Wins = 0;
+        player2Wins = 0;
         initializeBoard();
     }
 
@@ -17,9 +25,7 @@ public class TicTacToe {
             }
         }
     }
-    //Problem when testing: We need a outline of the grid. 11/27
-    //Problem solved by making a row and col array
-    // God damn it both hectors
+
     private void printBoard() {
         System.out.println("-------------");
         for (int i = 0; i < 3; i++) {
@@ -31,8 +37,7 @@ public class TicTacToe {
             System.out.println("-------------");
         }
     }
-    //Issue: Check if the Board is Full
-    //Problem Solved
+
     private boolean isBoardFull() {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
@@ -77,7 +82,8 @@ public class TicTacToe {
     private void switchPlayer() { // Switch Player function
         currentPlayer = (currentPlayer == 'X') ? 'O' : 'X';
     }
-    //Comnplete all function of the game to make the game functional
+
+    // Complete all functions of the game to make the game functional
     public void playGame() {
         Scanner scanner = new Scanner(System.in);
         int row, col;
@@ -85,7 +91,8 @@ public class TicTacToe {
         while (true) {
             printBoard();
 
-            System.out.println("Player " + currentPlayer + "'s turn. Enter row (0-2) and column (0-2) separated by space:");
+            System.out.println(
+                    "Player " + currentPlayer + "'s turn. Enter row (0-2) and column (0-2) separated by space:");
             row = scanner.nextInt();
             col = scanner.nextInt();
 
@@ -93,11 +100,30 @@ public class TicTacToe {
                 if (checkWin()) {
                     printBoard();
                     System.out.println("Player " + currentPlayer + " wins!");
-                    break;
+                    updateWins();
+                    if (isGameFinished()) {
+                        printFinalResult();
+                        if (askForRestart(scanner)) {
+                            resetGame();
+                        } else {
+                            break;
+                        }
+                    } else {
+                        resetBoard();
+                    }
                 } else if (isBoardFull()) {
                     printBoard();
                     System.out.println("It's a draw!");
-                    break;
+                    if (isGameFinished()) {
+                        printFinalResult();
+                        if (askForRestart(scanner)) {
+                            resetGame();
+                        } else {
+                            break;
+                        }
+                    } else {
+                        resetBoard();
+                    }
                 } else {
                     switchPlayer();
                 }
@@ -107,5 +133,48 @@ public class TicTacToe {
         }
 
         scanner.close();
+    }
+
+    private void updateWins() {
+        if (currentPlayer == 'X') {
+            player1Wins++;
+        } else {
+            player2Wins++;
+        }
+    }
+
+    private boolean isGameFinished() {
+        return player1Wins == 2 || player2Wins == 2;
+    }
+
+    private void printFinalResult() {
+        System.out.println("Game Over! Final Result:");
+        System.out.println("Player X Wins: " + player1Wins);
+        System.out.println("Player O Wins: " + player2Wins);
+        if (player1Wins > player2Wins) {
+            System.out.println("Player X is the winner!");
+        } else if (player2Wins > player1Wins) {
+            System.out.println("Player O is the winner!");
+        } else {
+            System.out.println("It's a tie!");
+        }
+    }
+
+    private void resetBoard() {
+        initializeBoard();
+        currentPlayer = (random.nextBoolean()) ? 'X' : 'O'; // Randomly choose starting player
+    }
+
+    private void resetGame() {
+        initializeBoard();
+        player1Wins = 0;
+        player2Wins = 0;
+        currentPlayer = (random.nextBoolean()) ? 'X' : 'O'; // Randomly choose starting player
+    }
+
+    private boolean askForRestart(Scanner scanner) {
+        System.out.println("Do you want to play again? (yes/no)");
+        String response = scanner.next().toLowerCase();
+        return response.equals("yes");
     }
 }
