@@ -1,14 +1,6 @@
 import java.util.Scanner;
 import java.util.Random;
 
-
-public class Main {
-    public static void main(String[] args) {
-        TicTacToe game = new TicTacToe();
-        game.playGame();
-    }
-}
-
 class TicTacToe {
     private char[][] board; // Since the char are basically row and col it more better to make the row and
                             // array to assign value.
