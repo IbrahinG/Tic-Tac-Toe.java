@@ -50,12 +50,16 @@ public class UI_Menu extends JFrame implements ActionListener {
 		{
 			enterOpponentMenu();
 		}
+		if(ev.getActionCommand().equals("AI"))
+		{
+			System.out.println("AI");
+		}
 
 	}
 	private void startPanel()
 	{
 		panel = new JPanel();
-		panel.setLayout(new GridLayout(5, 0));
+		panel.setLayout(new GridLayout(7, 0));
 		panel.setSize(500,500);
 		panel.setAlignmentY(BOTTOM_ALIGNMENT);
 		panel.setAlignmentX(BOTTOM_ALIGNMENT);
@@ -73,6 +77,12 @@ public class UI_Menu extends JFrame implements ActionListener {
 		TicTacToeLabel.setText("Choose game mode");
 		upperButton.setText("Human");
 		lowerButton.setText("AI");
+		JButton quit_button = new JButton("Quit");
+		quit_button.addActionListener(this);
+		quit_button.setBorder(new LineBorder(Color.YELLOW,2));
+		quit_button.setFont(new Font("Calibri",Font.PLAIN,12));
+		panel.add(Box.createRigidArea(new Dimension(0,25)));
+		panel.add(quit_button);
 	}
 }	
 
