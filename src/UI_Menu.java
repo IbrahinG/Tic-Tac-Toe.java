@@ -50,6 +50,7 @@ public class UI_Menu extends JFrame implements ActionListener {
 			enterOpponentMenu();
 		}
 		if (ev.getActionCommand().equals("Human")) {
+			System.out.println("Human");
 			state = "Human";
 		}
 		if (ev.getActionCommand().equals("AI")) {
