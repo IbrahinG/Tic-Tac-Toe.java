@@ -9,15 +9,19 @@ public class UI_Menu extends JFrame implements ActionListener {
 	JButton lowerButton;
 	JButton upperButton;
 	JLabel TicTacToeLabel = new JLabel("Tic Tac Toe");
+	private volatile String state = "Menu"; 
 	UI_Menu(JFrame frame)
 	{
 		menuFrame = frame;
 		menuFrame.setSize(500,500);
+		menuFrame.setDefaultCloseOperation(menuFrame.EXIT_ON_CLOSE);
 		menuFrame.setVisible(true);
 		menuFrame.setLayout(new FlowLayout());
 		menuFrame.getContentPane().setBackground(Color.BLACK);
 		startPanel();
+		
 		menuFrame.add(panel);
+		menuFrame.revalidate();
 	}
 	
 	public void startButtons()
@@ -52,7 +56,7 @@ public class UI_Menu extends JFrame implements ActionListener {
 		}
 		if(ev.getActionCommand().equals("AI"))
 		{
-			System.out.println("AI");
+			setState("AI");
 		}
 
 	}
@@ -83,6 +87,21 @@ public class UI_Menu extends JFrame implements ActionListener {
 		quit_button.setFont(new Font("Calibri",Font.PLAIN,12));
 		panel.add(Box.createRigidArea(new Dimension(0,25)));
 		panel.add(quit_button);
+	}
+	public JFrame getFrame()
+	{
+		menuFrame.remove(panel);
+		menuFrame.revalidate();
+		menuFrame.repaint();
+		return menuFrame;
+	}
+	public synchronized void setState(String newState)
+	{
+		state = newState;
+	}
+	public synchronized String getStateFromMenu()
+	{
+		return state;
 	}
 }	
 
