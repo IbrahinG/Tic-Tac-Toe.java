@@ -11,7 +11,7 @@ public class TicTacToe {
 		initializeBoard();
     }
 
-    private void initializeBoard() {
+    public void initializeBoard() {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) { // Creates grid
                 board[i][j] = '-';
@@ -68,4 +68,9 @@ public class TicTacToe {
         currentPlayer = (currentPlayer == 'X') ? 'O' : 'X';
     }
 	public char getPlayer(){return currentPlayer;}
+	public void setPlayer(char player)
+	{
+		currentPlayer = player;
+		switchPlayer();
+	}
 }

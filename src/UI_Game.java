@@ -11,6 +11,8 @@ public class UI_Game extends JFrame implements ActionListener {
 	public static JFrame gameFrame;
 	private String gameMode;
 	private TicTacToe game;
+	private boolean gameRunning = true;
+	private char player1 = 'X';
 
 	JLayeredPane board;
 	private JPanel top;
@@ -21,6 +23,8 @@ public class UI_Game extends JFrame implements ActionListener {
 
 	JLabel playerScore1;
 	JLabel playerScore2;
+	JLabel playerIcon1;
+	JLabel playerIcon2;
 	JButton tile;
 	ImageIcon cross;
 	ImageIcon circle;
@@ -32,7 +36,6 @@ public class UI_Game extends JFrame implements ActionListener {
 		gameFrame = frame;
 		gameFrame.setLayout(new BorderLayout(20,100));
 		gameFrame.setBackground(Color.BLACK);
-
 		
 
 		startBoardUI();
@@ -86,13 +89,13 @@ public class UI_Game extends JFrame implements ActionListener {
 		//top.add(Box.createRigidArea(new Dimension(0, 50)));
 		top.add(title);
 
-		bottom = new JPanel();
+		bottom = new JPanel(new FlowLayout());
 		bottom.setBackground(Color.black);
 	}
 	private void startEastAndWest()
 	{
-		west = new JPanel(new GridLayout(2,1));
-		east = new JPanel(new GridLayout(2,1));
+		west = new JPanel(new GridLayout(5,1));
+		east = new JPanel(new GridLayout(5,1));
 		west.setBackground(Color.black);
 		east.setBackground(Color.black);
 
@@ -104,10 +107,15 @@ public class UI_Game extends JFrame implements ActionListener {
 		JLabel player1Label = new JLabel("    Player 1");
 		player1Label.setFont(new Font("Calibri",Font.PLAIN,20));
 		player1Label.setForeground(Color.yellow);
+		playerIcon1 = new JLabel();
+		playerIcon1.setSize(25,25);
+		playerIcon2 = new JLabel();
 		JLabel player2Label = new JLabel("    Player 2");
 		player2Label.setFont(new Font("Calibri",Font.PLAIN,20));
 		player2Label.setForeground(Color.yellow);
-		//player1Panel.add(new JLabel(cross));
+		scaleIcons(playerIcon1.getSize());
+		playerIcon1.setIcon(cross);
+		playerIcon2.setIcon(circle);
 
 		playerScore1 = new JLabel("0");;
 		playerScore1.setFont(new Font("Calibri",Font.PLAIN,24));
@@ -117,12 +125,17 @@ public class UI_Game extends JFrame implements ActionListener {
 		playerScore2.setForeground(Color.white);
 
 		player1Panel.add(player1Label);
+		player1Panel.add(playerIcon1);
 		player2Panel.add(player2Label);
+		player2Panel.add(playerIcon2);
+
 		west.add(player1Panel);
 		west.add(playerScore1);
+		west.add(Box.createRigidArea(new Dimension(20, 100)));
 
 		east.add(player2Panel);
 		east.add(playerScore2);
+		east.add(Box.createRigidArea(new Dimension(20, 100)));
 	}
 	private void scaleIcons(Dimension tileSize)
 	{
@@ -140,8 +153,11 @@ public class UI_Game extends JFrame implements ActionListener {
 	}
 	public void actionPerformed(ActionEvent event)
 	{
+		System.out.println(event.getActionCommand());
 		if(Integer.parseInt(event.getActionCommand()) < 9)
 		{
+			if(!gameRunning)
+				return;
 			int buttonNumber = Integer.parseInt(event.getActionCommand());
 			int row = buttonNumber / 3;
 			int col = buttonNumber % 3;
@@ -171,12 +187,66 @@ public class UI_Game extends JFrame implements ActionListener {
 			board_panel.revalidate();
 			board_panel.repaint();	
 		}
+		if(event.getActionCommand().equals("No"))
+		{
+			System.exit(0);
+		}
+		if(event.getActionCommand().equals("Yes"))
+		{
+			game.initializeBoard();
+			game.setPlayer(player1);
+			for(Component c:bottom.getComponents())
+			{
+				bottom.remove(c);
+			}
+			Integer i = 0;
+			for(Component c:board_panel.getComponents())
+			{
+				board_panel.remove(c);
+				tile = new JButton();
+				tile.setActionCommand(i.toString());
+				tile.setBackground(Color.black);
+				tile.addActionListener(this);
+				tile.setBorder(new LineBorder(Color.white,2));
+				board_panel.add(tile);
+				i++;
+			}
+		}
+		board_panel.revalidate();
+		board_panel.repaint();	
 	}
 	private void gameEnded(char winnerPlayer,boolean victory)
 	{
+		gameRunning = false;
+		JLabel winnerLabel;
 		if(victory)
 		{
-
+			if(game.getPlayer() == player1)
+				winnerLabel = new JLabel("Player 1 won. Do you want to play again:");
+			else
+				winnerLabel = new JLabel("Player 1 won. Do you want to play again:");
 		}
+		else
+		{
+			winnerLabel = new JLabel("It is a draw. Do you want to play again:");
+		}
+		winnerLabel.setFont(new Font("Calibri",Font.ITALIC,20));
+		winnerLabel.setForeground(Color.red);
+		JButton yes = new JButton("Yes");
+		JButton no = new JButton("No");
+		yes.setActionCommand("Yes");
+		yes.addActionListener(this);
+		yes.setBackground(Color.BLACK);
+		yes.setForeground(Color.yellow);
+		no.setBackground(Color.black);
+		no.setForeground(Color.yellow);
+		no.setActionCommand("No");
+		no.addActionListener(this);
+
+		bottom.add(winnerLabel);
+		bottom.add(yes);
+		bottom.add(no);
+		gameFrame.revalidate();
+		gameFrame.repaint();
 	}
 }
