@@ -9,7 +9,8 @@ public class UI_Menu extends JFrame implements ActionListener {
 	JButton lowerButton;
 	JButton upperButton;
 	JLabel TicTacToeLabel = new JLabel("Tic Tac Toe");
-	private volatile String state = "Menu"; 
+	private volatile String state = "Menu";
+	 
 	UI_Menu(JFrame frame)
 	{
 		menuFrame = frame;
@@ -57,6 +58,10 @@ public class UI_Menu extends JFrame implements ActionListener {
 		if(ev.getActionCommand().equals("AI"))
 		{
 			setState("AI");
+		}
+		if(ev.getActionCommand().equals("Human"))
+		{
+			setState("Human");
 		}
 
 	}
