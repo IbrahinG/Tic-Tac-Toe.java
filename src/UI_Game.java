@@ -153,6 +153,50 @@ public class UI_Game extends JFrame implements ActionListener {
 	}
 	public void actionPerformed(ActionEvent event)
 	{
+		if(event.getActionCommand().equals("No"))
+		{
+			System.exit(0);
+		}
+		if(event.getActionCommand().equals("Yes"))
+		{
+			game.initializeBoard();
+			if(player1 == 'X')
+			player1 = 'O';
+		else
+			player1 = 'X';
+			for(Component c:bottom.getComponents())
+			{
+				bottom.remove(c);
+			}
+			Integer i = 0;
+			for(Component c:board_panel.getComponents())
+			{
+				board_panel.remove(c);
+				tile = new JButton();
+				tile.setActionCommand(i.toString());
+				tile.setBackground(Color.black);
+				tile.addActionListener(this);
+				tile.setBorder(new LineBorder(Color.white,2));
+				board_panel.add(tile);
+				i++;
+			}
+			gameFrame.revalidate();
+			gameFrame.repaint();
+			scaleIcons(new Dimension(25,25));
+			if(player1 == 'X')
+			{
+				playerIcon1.setIcon(cross);
+				playerIcon2.setIcon(circle);
+			}
+			else
+			{
+				playerIcon2.setIcon(cross);
+				playerIcon1.setIcon(circle);
+			}
+			scaleIcons(tile.getSize());
+			gameRunning = true;
+			return;	
+		}
 		System.out.println(event.getActionCommand());
 		if(Integer.parseInt(event.getActionCommand()) < 9)
 		{
@@ -187,33 +231,6 @@ public class UI_Game extends JFrame implements ActionListener {
 			board_panel.revalidate();
 			board_panel.repaint();	
 		}
-		if(event.getActionCommand().equals("No"))
-		{
-			System.exit(0);
-		}
-		if(event.getActionCommand().equals("Yes"))
-		{
-			game.initializeBoard();
-			game.setPlayer(player1);
-			for(Component c:bottom.getComponents())
-			{
-				bottom.remove(c);
-			}
-			Integer i = 0;
-			for(Component c:board_panel.getComponents())
-			{
-				board_panel.remove(c);
-				tile = new JButton();
-				tile.setActionCommand(i.toString());
-				tile.setBackground(Color.black);
-				tile.addActionListener(this);
-				tile.setBorder(new LineBorder(Color.white,2));
-				board_panel.add(tile);
-				i++;
-			}
-		}
-		board_panel.revalidate();
-		board_panel.repaint();	
 	}
 	private void gameEnded(char winnerPlayer,boolean victory)
 	{
@@ -224,7 +241,7 @@ public class UI_Game extends JFrame implements ActionListener {
 			if(game.getPlayer() == player1)
 				winnerLabel = new JLabel("Player 1 won. Do you want to play again:");
 			else
-				winnerLabel = new JLabel("Player 1 won. Do you want to play again:");
+				winnerLabel = new JLabel("Player 2 won. Do you want to play again:");
 		}
 		else
 		{
