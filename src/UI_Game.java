@@ -14,6 +14,7 @@ public class UI_Game extends JFrame implements ActionListener {
 	private TicTacToeBot bot;
 	private boolean gameRunning = true;
 	private char player1 = 'X';
+	boolean areIconsScaled;
 
 	JLayeredPane board;
 	private JPanel top;
@@ -146,6 +147,7 @@ public class UI_Game extends JFrame implements ActionListener {
 	}
 	private void scaleIcons(Dimension tileSize)
 	{
+		areIconsScaled = false;
 		try
 			{
 			Image crossImage = ImageIO.read(this.getClass().getResource("images//X.png")).getScaledInstance(tileSize.width, tileSize.height, Image.SCALE_DEFAULT);
@@ -157,6 +159,7 @@ public class UI_Game extends JFrame implements ActionListener {
 			{
 				System.out.println("Error");
 			}
+			areIconsScaled = true;
 	}
 	public void actionPerformed(ActionEvent event)
 	{
@@ -171,7 +174,7 @@ public class UI_Game extends JFrame implements ActionListener {
 		}
 		if(Integer.parseInt(event.getActionCommand()) < 9)
 		{
-			if(!gameRunning)
+			if(!gameRunning || !areIconsScaled)
 				return;
 			int buttonNumber = Integer.parseInt(event.getActionCommand());
 			int row = buttonNumber / 3;
