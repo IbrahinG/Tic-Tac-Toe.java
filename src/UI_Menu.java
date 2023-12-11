@@ -3,6 +3,7 @@ import javax.swing.border.LineBorder;
 
 import java.awt.*;
 import java.awt.event.*;
+
 public class UI_Menu extends JFrame implements ActionListener {
 	static JFrame menuFrame;
 	JPanel panel;
@@ -10,103 +11,99 @@ public class UI_Menu extends JFrame implements ActionListener {
 	JButton upperButton;
 	JLabel TicTacToeLabel = new JLabel("Tic Tac Toe");
 	private volatile String state = "Menu";
-	 
-	UI_Menu(JFrame frame)
-	{
+
+	UI_Menu(JFrame frame) {
 		menuFrame = frame;
-		menuFrame.setSize(500,500);
+		menuFrame.setSize(500, 500);
 		menuFrame.setDefaultCloseOperation(menuFrame.EXIT_ON_CLOSE);
 		menuFrame.setVisible(true);
 		menuFrame.setLayout(new FlowLayout());
 		menuFrame.getContentPane().setBackground(Color.BLACK);
 		startPanel();
-		
+
 		menuFrame.add(panel);
 		menuFrame.revalidate();
 	}
-	
-	public void startButtons()
-	{
+
+	public void startButtons() {
 		lowerButton = new JButton("Quit");
 		lowerButton.addActionListener(this);
-		lowerButton.setMaximumSize(new Dimension(100,50));
-		lowerButton.setFont(new Font("Calibri",Font.BOLD, 12));
+		lowerButton.setMaximumSize(new Dimension(100, 50));
+		lowerButton.setFont(new Font("Calibri", Font.BOLD, 12));
 		lowerButton.setBorder(new LineBorder(Color.YELLOW, 2));
 
 		upperButton = new JButton("Play");
 		upperButton.addActionListener(this);
-		upperButton.setMaximumSize(new Dimension(100,50));
-		upperButton.setBorder(new LineBorder(Color.YELLOW,2));
+		upperButton.setMaximumSize(new Dimension(100, 50));
+		upperButton.setBorder(new LineBorder(Color.YELLOW, 2));
 
 		TicTacToeLabel.setSize(100, 50);
-		TicTacToeLabel.setFont(new Font("Calibri",Font.ITALIC,36));
+		TicTacToeLabel.setFont(new Font("Calibri", Font.ITALIC, 36));
 		TicTacToeLabel.setForeground(Color.WHITE);
-		//TicTacToeLabel.setFont(new Font();
+		// TicTacToeLabel.setFont(new Font();
 
-		
 	}
-	public void actionPerformed(ActionEvent ev)
-	{
-		if(ev.getActionCommand().equals("Quit"))
-		{
+
+	public void actionPerformed(ActionEvent ev) {
+		if (ev.getActionCommand().equals("Quit")) {
 			System.exit(0);
 		}
-		if(ev.getActionCommand().equals("Play"))
-		{
+		if (ev.getActionCommand().equals("Play")) {
 			enterOpponentMenu();
 		}
-		if(ev.getActionCommand().equals("AI"))
-		{
-			setState("AI");
-		}
-		if(ev.getActionCommand().equals("Human"))
-		{
+		/*
+		 * if(ev.getActionCommand().equals("AI"))
+		 * {
+		 * setState("AI");
+		 * }
+		 */
+		// Removed
+		if (ev.getActionCommand().equals("Human")) {
 			setState("Human");
 		}
 
 	}
-	private void startPanel()
-	{
+
+	private void startPanel() {
 		panel = new JPanel();
 		panel.setLayout(new GridLayout(7, 0));
-		panel.setSize(500,500);
+		panel.setSize(500, 500);
 		panel.setAlignmentY(BOTTOM_ALIGNMENT);
 		panel.setAlignmentX(BOTTOM_ALIGNMENT);
 		panel.setBackground(Color.BLACK);
 		startButtons();
 
 		panel.add(TicTacToeLabel);
-		panel.add(Box.createRigidArea(new Dimension(0,50)));
+		panel.add(Box.createRigidArea(new Dimension(0, 50)));
 		panel.add(upperButton);
-		panel.add(Box.createRigidArea(new Dimension(0,25)));
-		panel.add(lowerButton);
+		panel.add(Box.createRigidArea(new Dimension(0, 25)));
+		// panel.add(lowerButton);
 	}
-	private void enterOpponentMenu()
-	{
+
+	private void enterOpponentMenu() {
 		TicTacToeLabel.setText("Choose game mode");
 		upperButton.setText("Human");
-		lowerButton.setText("AI");
+		// lowerButton.setText("AI");
 		JButton quit_button = new JButton("Quit");
 		quit_button.addActionListener(this);
-		quit_button.setBorder(new LineBorder(Color.YELLOW,2));
-		quit_button.setFont(new Font("Calibri",Font.PLAIN,12));
-		panel.add(Box.createRigidArea(new Dimension(0,25)));
+		quit_button.setBorder(new LineBorder(Color.YELLOW, 2));
+		quit_button.setFont(new Font("Calibri", Font.PLAIN, 12));
+		panel.add(Box.createRigidArea(new Dimension(0, 25)));
 		panel.add(quit_button);
 	}
-	public JFrame getFrame()
-	{
+
+	public JFrame getFrame() {
 		menuFrame.remove(panel);
 		menuFrame.revalidate();
 		menuFrame.repaint();
 		return menuFrame;
 	}
-	public synchronized void setState(String newState)
-	{
+
+	public synchronized void setState(String newState) {
 		state = newState;
 	}
-	public synchronized String getStateFromMenu()
-	{
+
+	public synchronized String getStateFromMenu() {
 		return state;
 	}
-}	
-
+}
