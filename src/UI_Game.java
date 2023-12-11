@@ -230,6 +230,14 @@ public class UI_Game extends JFrame implements ActionListener {
 			buttonNumberCount -= 1;
 
 		}
+		if(game.checkWin())
+		{
+			gameEnded(game.getPlayer(),true);
+		}
+		else if(game.isBoardFull())
+		{
+			gameEnded(game.getPlayer(), false);
+		}
 		game.switchPlayer();
 
 	}
@@ -271,7 +279,7 @@ public class UI_Game extends JFrame implements ActionListener {
 			}
 			scaleIcons(tile.getSize());
 			gameRunning = true;
-			if(gameMode.equals("AI"))
+			if(gameMode.equals("AI") && player1 == 'O')
 			{
 				makeBotPlay();
 			}
@@ -292,7 +300,10 @@ public class UI_Game extends JFrame implements ActionListener {
 			{
 				player2Points += 1;
 				playerScore2.setText(player2Points.toString());
-				winnerLabel = new JLabel("Player 2 won. Do you want to play again:");
+				if(gameMode.equals("Human"))
+					winnerLabel = new JLabel("Player 2 won. Do you want to play again:");
+				else
+					winnerLabel = new JLabel("AI Player won. Do you want to play again:");
 			}
 		}
 		else
