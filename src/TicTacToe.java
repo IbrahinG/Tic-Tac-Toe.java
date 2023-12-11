@@ -6,8 +6,7 @@ public class TicTacToe {
 	//private TicTacToeBot bot;
 
     public TicTacToe() {
-        board = new char[3][3]; // Make (3 x 3) grid
-        currentPlayer = 'X'; //Checks on the player
+        board = new char[3][3]; // Make (3 x 3) grid 
 		initializeBoard();
     }
 
@@ -17,6 +16,7 @@ public class TicTacToe {
                 board[i][j] = '-';
             }
         }
+		 currentPlayer = 'X';//Checks on the player
     }
     //Problem when testing: We need a outline of the grid. 11/27
     //Problem solved by making a row and col array
@@ -68,9 +68,5 @@ public class TicTacToe {
         currentPlayer = (currentPlayer == 'X') ? 'O' : 'X';
     }
 	public char getPlayer(){return currentPlayer;}
-	public void setPlayer(char player)
-	{
-		currentPlayer = player;
-		switchPlayer();
-	}
+	public char[][] getBoard(){return board;}
 }

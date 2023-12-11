@@ -24,7 +24,7 @@ public class TicTacToeBot {
     }
 
     // Method to find the best move using a simple random strategy
-    private int[] getBestMove(char[][] board) {
+    public int[] getBestMove(char[][] board) {
         // Check for empty spots and choose a random one
         Random random = new Random();
         int row, col;
@@ -32,7 +32,7 @@ public class TicTacToeBot {
         do {
             row = random.nextInt(3);
             col = random.nextInt(3);
-        } while (board[row][col] != ' ');
+        } while (board[row][col] != '-');
 
         return new int[]{row, col};
     }

@@ -11,6 +11,7 @@ public class UI_Game extends JFrame implements ActionListener {
 	public static JFrame gameFrame;
 	private String gameMode;
 	private TicTacToe game;
+	private TicTacToeBot bot;
 	private boolean gameRunning = true;
 	private char player1 = 'X';
 
@@ -23,6 +24,8 @@ public class UI_Game extends JFrame implements ActionListener {
 
 	JLabel playerScore1;
 	JLabel playerScore2;
+	Integer player1Points = 0;
+	Integer player2Points = 0;
 	JLabel playerIcon1;
 	JLabel playerIcon2;
 	JButton tile;
@@ -33,6 +36,7 @@ public class UI_Game extends JFrame implements ActionListener {
 	{
 		game = new TicTacToe();
 		gameMode = mode;
+		bot = new TicTacToeBot(((player1 == 'X')? 'O' : 'X'));
 		gameFrame = frame;
 		gameFrame.setLayout(new BorderLayout(20,100));
 		gameFrame.setBackground(Color.BLACK);
@@ -56,7 +60,7 @@ public class UI_Game extends JFrame implements ActionListener {
 	{
 		board = new JLayeredPane();
 		board.setBackground(Color.yellow);
-		board.setBorder(new LineBorder(Color.white, 2));
+		//board.setBorder(new LineBorder(Color.white, 2));
 		board.setLayout(new GridLayout(0,1));
 	
 		board_panel = new JPanel();
@@ -108,9 +112,12 @@ public class UI_Game extends JFrame implements ActionListener {
 		player1Label.setFont(new Font("Calibri",Font.PLAIN,20));
 		player1Label.setForeground(Color.yellow);
 		playerIcon1 = new JLabel();
+		
 		playerIcon1.setSize(25,25);
 		playerIcon2 = new JLabel();
 		JLabel player2Label = new JLabel("    Player 2");
+		if(gameMode.equals("AI"))
+			player2Label.setText("   AI Player");
 		player2Label.setFont(new Font("Calibri",Font.PLAIN,20));
 		player2Label.setForeground(Color.yellow);
 		scaleIcons(playerIcon1.getSize());
@@ -159,11 +166,80 @@ public class UI_Game extends JFrame implements ActionListener {
 		}
 		if(event.getActionCommand().equals("Yes"))
 		{
-			game.initializeBoard();
+			replay();
+			return;
+		}
+		if(Integer.parseInt(event.getActionCommand()) < 9)
+		{
+			if(!gameRunning)
+				return;
+			int buttonNumber = Integer.parseInt(event.getActionCommand());
+			int row = buttonNumber / 3;
+			int col = buttonNumber % 3;
+			if(!game.makeMove(row, col))
+			{	
+				return;
+			}
+			JButton tileActivated = (JButton)event.getSource();
+			ImageIcon turnIcon = (game.getPlayer() == 'X')? cross:circle;
+			tileActivated.setIcon(turnIcon);
+			
+			if(game.checkWin())
+			{
+				gameEnded(game.getPlayer(),true);
+			}
+			else if(game.isBoardFull())
+			{
+			gameEnded(game.getPlayer(),false);
+			}
+			else if(gameMode.equals("AI"))
+			{
+				game.switchPlayer();
+				makeBotPlay();
+			}
+			else
+			{
+				game.switchPlayer();			
+			}
+			board_panel.revalidate();
+			board_panel.repaint();
+			try
+				{
+					Thread.sleep(50);
+				}
+				catch(Exception e)
+				{
+					System.exit(1);
+				}
+		}
+	}
+	private void makeBotPlay()
+	{
+		int[] move = bot.getBestMove(game.getBoard());
+		int buttonNumberCount = move[0] * 3 + move[1];
+		game.makeMove(move[0], move[1]);
+		for(Component c : board_panel.getComponents())
+		{
+			if(buttonNumberCount == 0)
+			{
+			JButton tileActivated = (JButton)c;
+			ImageIcon turnIcon = (game.getPlayer() == 'X')? cross:circle;
+			tileActivated.setIcon(turnIcon);
+			break;
+			}
+			buttonNumberCount -= 1;
+
+		}
+		game.switchPlayer();
+
+	}
+	private void replay()
+	{
+		game.initializeBoard();
 			if(player1 == 'X')
-			player1 = 'O';
-		else
-			player1 = 'X';
+				player1 = 'O';
+			else
+				player1 = 'X';
 			for(Component c:bottom.getComponents())
 			{
 				bottom.remove(c);
@@ -195,42 +271,10 @@ public class UI_Game extends JFrame implements ActionListener {
 			}
 			scaleIcons(tile.getSize());
 			gameRunning = true;
-			return;	
-		}
-		System.out.println(event.getActionCommand());
-		if(Integer.parseInt(event.getActionCommand()) < 9)
-		{
-			if(!gameRunning)
-				return;
-			int buttonNumber = Integer.parseInt(event.getActionCommand());
-			int row = buttonNumber / 3;
-			int col = buttonNumber % 3;
-			if(!game.makeMove(row, col))
-			{	
-				return;
-			}
-			JButton tileActivated = (JButton)event.getSource();
-			ImageIcon turnIcon = (game.getPlayer() == 'X')? cross:circle;
-			tileActivated.setIcon(turnIcon);
-			if(gameMode == "Human")
+			if(gameMode.equals("AI"))
 			{
-				if(game.checkWin())
-				{
-					gameEnded(game.getPlayer(),true);
-				}
-				else if(game.isBoardFull())
-				{
-				gameEnded(game.getPlayer(),false);
-				}
-				else{
-					game.switchPlayer();
-				}
+				makeBotPlay();
 			}
-			
-			
-			board_panel.revalidate();
-			board_panel.repaint();	
-		}
 	}
 	private void gameEnded(char winnerPlayer,boolean victory)
 	{
@@ -239,9 +283,17 @@ public class UI_Game extends JFrame implements ActionListener {
 		if(victory)
 		{
 			if(game.getPlayer() == player1)
+			{
+				player1Points += 1;
+				playerScore1.setText(player1Points.toString());
 				winnerLabel = new JLabel("Player 1 won. Do you want to play again:");
+			}
 			else
+			{
+				player2Points += 1;
+				playerScore2.setText(player2Points.toString());
 				winnerLabel = new JLabel("Player 2 won. Do you want to play again:");
+			}
 		}
 		else
 		{
