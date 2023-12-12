@@ -1,7 +1,7 @@
 # Tic-Tac-Toe.java
 ## What is Tic-Tac-Toe.java
 **It just like what it says. Its Tic-Tac-Toe. But Built in java.**
-- This game is built off of java programming and using the swing libary to make the graphics on the screen.
+- This game is built off of java programming and using the swing library to make the graphics on the screen.
 - Simply you play Tic-Tac-Toe with your buddy
 ![Screenshot of the game](https://cdn.discordapp.com/attachments/1021909161983889502/1183837950270783549/image.png?ex=6589ca01&is=65775501&hm=110a42d4c097ffe7ecba550e05f95caffd141bee6f379817d2dd1e9a476a297d&)
 
