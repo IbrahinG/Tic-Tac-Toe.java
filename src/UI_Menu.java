@@ -51,13 +51,9 @@ public class UI_Menu extends JFrame implements ActionListener {
 		if (ev.getActionCommand().equals("Play")) {
 			enterOpponentMenu();
 		}
-		/*
-		 * if(ev.getActionCommand().equals("AI"))
-		 * {
-		 * setState("AI");
-		 * }
-		 */
-		// Removed
+		if (ev.getActionCommand().equals("AI")) {
+			setState("AI");
+		}
 		if (ev.getActionCommand().equals("Human")) {
 			setState("Human");
 		}
@@ -77,13 +73,13 @@ public class UI_Menu extends JFrame implements ActionListener {
 		panel.add(Box.createRigidArea(new Dimension(0, 50)));
 		panel.add(upperButton);
 		panel.add(Box.createRigidArea(new Dimension(0, 25)));
-		// panel.add(lowerButton);
+		panel.add(lowerButton);
 	}
 
 	private void enterOpponentMenu() {
 		TicTacToeLabel.setText("Choose game mode");
 		upperButton.setText("Human");
-		// lowerButton.setText("AI");
+		lowerButton.setText("AI");
 		JButton quit_button = new JButton("Quit");
 		quit_button.addActionListener(this);
 		quit_button.setBorder(new LineBorder(Color.YELLOW, 2));
